@@ -353,14 +353,13 @@ namespace SpaceSimulation
 
     public class AnimationController
     {
-        // Define the event and delegate
         public delegate void TickEventHandler(object sender, TickEventArgs e);
 
         public event TickEventHandler? DoTick;
 
         private readonly DispatcherTimer _timer;
         private double _currentTime;
-        private double _timeIncrement = 1.0; // Days per tick
+        private double _timeIncrement = 1.0;
 
         public double CurrentTime => _currentTime;
         public bool IsRunning => _timer.IsEnabled;
@@ -368,7 +367,7 @@ namespace SpaceSimulation
         public AnimationController()
         {
             _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromMilliseconds(16.67); // 20 FPS
+            _timer.Interval = TimeSpan.FromMilliseconds(16.67);
             _timer.Tick += Timer_Tick;
         }
 
