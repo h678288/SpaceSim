@@ -29,7 +29,7 @@ namespace SpaceSimulation
             {
                 if (obj != null)
                 {
-                    _animationController.DoTick += (_, _) => RedrawCurrentView();
+                    _animationController.DoTick += (_, _) => RedrawView();
                 }
             }
 
@@ -222,9 +222,26 @@ namespace SpaceSimulation
                 SpaceObject? moon = moons[i];
                 if (moon == null) continue;
 
-                double orbitPeriod = moon.OrbitPeriod * 10;
-                
-                double minDistance = planetSize + 20;
+                double orbitPeriod = moon.OrbitPeriod;
+
+                double minDistance;
+                switch(moons[i]?.ParentPlanet) {
+                    case "Jupiter":
+                        minDistance = 200;
+                        break;
+                    case "Saturn":
+                        minDistance = 180;
+                        break;
+                    case "Neptune":
+                        minDistance = 100;
+                        break;
+                    case "Uranus":
+                        minDistance = 100;
+                        break;
+                    default:
+                        minDistance = 50;
+                        break;
+                }
                 double maxDistance = canvasRadius - 20;
 
                 double moonDistanceRatio = i / (double)Math.Max(1, moons.Count - 1);
@@ -279,22 +296,22 @@ namespace SpaceSimulation
 
         private void ShowLabels_Checked(object sender, RoutedEventArgs e)
         {
-            RedrawCurrentView();
+            RedrawView();
         }
 
         private void ShowOrbits_Checked(object sender, RoutedEventArgs e)
         {
-            RedrawCurrentView();
+            RedrawView();
         }
 
         private void ShowLabels_UnChecked(object sender, RoutedEventArgs e)
         {
-            RedrawCurrentView();
+            RedrawView();
         }
 
         private void ShowOrbits_UnChecked(object sender, RoutedEventArgs e)
         {
-            RedrawCurrentView();
+            RedrawView();
         }
 
         private void ScaleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -302,10 +319,10 @@ namespace SpaceSimulation
             _orbitScale = StandardOrbitScale * Math.Pow(1.5, e.NewValue - 1);
             _scale = StandardScale * Math.Pow(1.5, e.NewValue - 1);
 
-            RedrawCurrentView();
+            RedrawView();
         }
 
-        private void RedrawCurrentView()
+        private void RedrawView()
         {
             if (PlanetSelector.SelectedItem != null)
             {
@@ -347,7 +364,7 @@ namespace SpaceSimulation
 
         private void SpeedSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            _animationController?.SetSpeed(e.NewValue);
+            _animationController?.SetSpeed(e.NewValue / 60);
         }
     }
 
@@ -359,10 +376,9 @@ namespace SpaceSimulation
 
         private readonly DispatcherTimer _timer;
         private double _currentTime;
-        private double _timeIncrement = 1.0;
+        private double _timeIncrement = 1.0 / 60;
 
         public double CurrentTime => _currentTime;
-        public bool IsRunning => _timer.IsEnabled;
 
         public AnimationController()
         {

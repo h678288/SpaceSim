@@ -41,14 +41,12 @@ class Astronomy
     private static void DisplayObjectDetails(SpaceObject? obj, double time)
     {
         var position = obj!.CalculatePosition(time);
-        Console.WriteLine($"{obj.Name} Details:");
-        Console.WriteLine($"  Position: X = {position.X:F2}, Y = {position.Y:F2}");
-        Console.WriteLine($"  Orbit Radius: {obj.OrbitRadius} km");
-        Console.WriteLine($"  Orbit Period: {obj.OrbitPeriod} days");
-        Console.WriteLine($"  Object Radius: {obj.ObjectRadius} km");
-        Console.WriteLine($"  Rotation Period: {obj.RotationPeriod}");
-        Console.WriteLine($"  Color: {obj.Color}");
-        Console.WriteLine();
+        Console.WriteLine($"\n{obj.Name} Details:");
+        Console.WriteLine($"\tPosition: X = {position.X:F2}, Y = {position.Y:F2}");
+        Console.WriteLine($"\tOrbit Radius: {obj.OrbitRadius} km");
+        Console.WriteLine($"\tOrbit Period: {obj.OrbitPeriod} days");
+        Console.WriteLine($"\tObject Radius: {obj.ObjectRadius} km");
+        Console.WriteLine($"\tRotation Period: {obj.RotationPeriod}\n");
     }
 }
 
